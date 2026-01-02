@@ -659,7 +659,9 @@ class WampWebSocketClient(WebSocketBaseClient):
         """
         super(WampWebSocketClient, self).handshake_ok()
         self.listener_thread.start()
-        self.on_connect()
+        t=threading.Thread(target=self.on_connect, name='wamp-on-connect')
+        t.daemon = True
+        t.start()
 
     def join(self, realm, authmethods=None, authid=None):
         """
